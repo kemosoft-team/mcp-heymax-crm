@@ -1,18 +1,39 @@
 {
-  "name": "kemosoft-mcp-server",
+  "name": "mcp-heymax-crm",
   "version": "0.1.0",
   "private": true,
-  "description": "MCP server for Kemosoft Customer Service API",
+  "description": "MCP server for the HeyMax CRM customer service API",
   "type": "module",
   "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
     "dev": "tsx watch src/index.ts",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "clean": "node -e \"import('node:fs/promises').then(fs => fs.rm('dist', { recursive: true, force: true }))\""
   },
   "engines": {
     "node": ">=22"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kemosoft-team/mcp-heymax-crm.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kemosoft-team/mcp-heymax-crm/issues"
+  },
+  "homepage": "https://github.com/kemosoft-team/mcp-heymax-crm#readme",
+  "keywords": [
+    "mcp",
+    "crm",
+    "typescript",
+    "model-context-protocol",
+    "heymax",
+    "kemosoft"
+  ],
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",
     "zod": "^3.25.76"
