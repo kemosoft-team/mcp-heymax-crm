@@ -15,18 +15,13 @@ Revisão adversarial:
 
 ## Fluxo
 
-```mermaid
-sequenceDiagram
-    participant Cliente as Cliente MCP
-    participant Servidor as mcp-heymax-crm
-    participant API as HeyMax CRM API
-
-    Cliente->>Servidor: chama tool
-    Servidor->>Servidor: valida input com Zod
-    Servidor->>API: envia request com api-key
-    API-->>Servidor: retorna JSON ou erro HTTP
-    Servidor->>Servidor: normaliza resposta/erro
-    Servidor-->>Cliente: structuredContent + texto
+```text
+Cliente MCP
+  -> Servidor (valida input com Zod)
+  -> HeyMax CRM API (envia request com api-key)
+  <- JSON ou erro HTTP
+  -> Servidor (normaliza resposta/erro)
+  -> Cliente (structuredContent + texto)
 ```
 
 ## Para quem isso é utilizável
