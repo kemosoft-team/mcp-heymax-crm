@@ -114,20 +114,28 @@ export function renderListMarkdown(
     });
   }
 
-  lines.push("", "```json", stringifyJson(items), "```");
+  lines.push("", "Use `response_format=json` to inspect the sanitized structured payload.");
   return lines.join("\n");
 }
 
 export function renderLookupMarkdown(title: string, inputLabel: string, inputValue: string, result: JsonValue): string {
-  return [
+  const lines = [
     `# ${title}`,
     "",
     `- **${inputLabel}**: ${inputValue}`,
-    "",
-    "```json",
-    stringifyJson(result),
-    "```",
-  ].join("\n");
+  ];
+
+  if (isJsonObject(result)) {
+    for (const [key, value] of Object.entries(result).slice(0, 8)) {
+      if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
+        lines.push(`- **${key}**: ${String(value)}`);
+      }
+    }
+  }
+
+  lines.push("", "Use `response_format=json` to inspect the sanitized structured payload.");
+
+  return lines.join("\n");
 }
 
 export function renderFlowMarkdown(
@@ -142,9 +150,7 @@ export function renderFlowMarkdown(
     `- **Funnel**: ${funnel}`,
     `- **Include images**: ${String(includeImages)}`,
     "",
-    "```json",
-    stringifyJson(result),
-    "```",
+    "Use `response_format=json` to inspect the sanitized structured payload.",
   ].join("\n");
 }
 
@@ -177,6 +183,6 @@ export function renderStatusMarkdown(
     appendIfPresent(lines, "CPF", status.cliente.cpf);
   }
 
-  lines.push("", "```json", stringifyJson(status), "```");
+  lines.push("", "Use `response_format=json` to inspect the sanitized structured payload.");
   return lines.join("\n");
 }

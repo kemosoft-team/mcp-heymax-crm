@@ -52,10 +52,17 @@ Revisão adversarial:
 Copie `.env.example` para `.env` ou exporte as variáveis no shell:
 
 - `HEYMAX_CRM_API_KEY`: obrigatório
-- `HEYMAX_CRM_API_BASE_URL`: opcional, default `https://ms-crm-az.kemosoft.com.br`
 - `HEYMAX_CRM_API_SOURCE`: opcional nesta versão; será usado nas futuras operações de escrita
 
 O timeout de request nao e configuravel pelo usuario. Ele e fixo em `30s`.
+O host da API tambem nao e configuravel. O servidor so fala com `https://ms-crm-az.kemosoft.com.br`.
+
+## Guardrails de seguranca
+
+- respostas de erro upstream sao sanitizadas
+- payloads retornados ao modelo passam por redacao de campos sensiveis
+- conteudos potencialmente binarios ou base64 sao removidos do output
+- o markdown nao inclui mais dumps brutos de JSON
 
 ## Instalação
 

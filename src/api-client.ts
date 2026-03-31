@@ -1,3 +1,4 @@
+import { validateApiBaseUrl } from "./security.js";
 import type { ApiClientConfig, ApiRequestOptions, JsonObject, JsonValue } from "./types.js";
 
 export class KemosoftApiError extends Error {
@@ -53,39 +54,44 @@ function extractErrorMessage(body: JsonValue): string | undefined {
 
 export function formatApiError(error: unknown): string {
   if (error instanceof KemosoftApiError) {
-    const baseMessage = extractErrorMessage(error.body) ?? error.message;
-
     switch (error.status) {
       case 401:
-        return `Authentication failed with the Kemosoft API: ${baseMessage}. Check HEYMAX_CRM_API_KEY.`;
+        return "Authentication failed with the HeyMax CRM API. Check HEYMAX_CRM_API_KEY.";
       case 404:
-        return `Kemosoft resource not found: ${baseMessage}. Confirm the provided identifiers.`;
+        return "Requested HeyMax CRM resource was not found. Confirm the provided identifiers.";
       case 422:
-        return `Kemosoft rejected the request payload: ${baseMessage}. Review the sent parameters.`;
+        return "HeyMax CRM API rejected the request payload. Review the sent parameters.";
       case 429:
-        return `Kemosoft rate limit reached: ${baseMessage}. Retry later.`;
+        return "HeyMax CRM API rate limit reached. Retry later.";
       default:
-        return `Kemosoft API request failed with status ${error.status}: ${baseMessage}`;
+        return `HeyMax CRM API request failed with status ${error.status}.`;
     }
   }
 
   if (error instanceof DOMException && error.name === "TimeoutError") {
-    return "Kemosoft API request timed out after 30 seconds. Retry with a narrower query.";
+    return "HeyMax CRM API request timed out after 30 seconds. Retry with a narrower query.";
   }
 
   if (error instanceof Error) {
-    return `Unexpected error while calling Kemosoft API: ${error.message}`;
+    return truncateErrorMessage(error.message);
   }
 
-  return `Unexpected error while calling Kemosoft API: ${String(error)}`;
+  return "Unexpected error while calling the HeyMax CRM API.";
+}
+
+function truncateErrorMessage(message: string): string {
+  const normalized = message.replace(/\s+/g, " ").trim();
+  const safeMessage = normalized.slice(0, 180);
+  return safeMessage.length > 0
+    ? `Unexpected error while calling the HeyMax CRM API: ${safeMessage}`
+    : "Unexpected error while calling the HeyMax CRM API.";
 }
 
 export class KemosoftApiClient {
   private readonly baseUrl: URL;
 
   constructor(private readonly config: ApiClientConfig) {
-    const normalizedBaseUrl = config.baseUrl.endsWith("/") ? config.baseUrl : `${config.baseUrl}/`;
-    this.baseUrl = new URL(normalizedBaseUrl);
+    this.baseUrl = new URL(validateApiBaseUrl(config.baseUrl));
   }
 
   async request<T extends JsonValue>(path: string, options: ApiRequestOptions = {}): Promise<T> {

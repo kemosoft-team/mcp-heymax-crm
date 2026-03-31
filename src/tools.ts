@@ -23,6 +23,7 @@ import {
   statusByFunnelAndCpfInputSchema,
   statusByIdInputSchema,
 } from "./schemas.js";
+import { sanitizeForOutput } from "./security.js";
 import type { JsonObject, JsonValue, ServiceStatus } from "./types.js";
 
 const READ_ONLY_ANNOTATIONS = {
@@ -104,7 +105,10 @@ export function registerKemosoftTools(server: McpServer, client: KemosoftApiClie
     async ({ limit, response_format }) => {
       try {
         const raw = await client.get<JsonValue>("/v1/atendimento/funis-ativos");
-        const payload = sliceItems(ensureArray(raw, "list active pipelines"), limit);
+        const payload = sliceItems(
+          ensureArray(raw, "list active pipelines").map((item) => sanitizeForOutput(item, "generic")),
+          limit,
+        );
         return createToolSuccess(
           response_format,
           payload,
@@ -128,7 +132,10 @@ export function registerKemosoftTools(server: McpServer, client: KemosoftApiClie
     async ({ limit, response_format }) => {
       try {
         const raw = await client.get<JsonValue>("/v1/atendimento/motivos-encerramento");
-        const payload = sliceItems(ensureArray(raw, "list lost reasons"), limit);
+        const payload = sliceItems(
+          ensureArray(raw, "list lost reasons").map((item) => sanitizeForOutput(item, "generic")),
+          limit,
+        );
         return createToolSuccess(
           response_format,
           payload,
@@ -152,7 +159,10 @@ export function registerKemosoftTools(server: McpServer, client: KemosoftApiClie
     async ({ limit, response_format }) => {
       try {
         const raw = await client.get<JsonValue>("/v1/atendimento/eventos");
-        const payload = sliceItems(ensureArray(raw, "list events"), limit);
+        const payload = sliceItems(
+          ensureArray(raw, "list events").map((item) => sanitizeForOutput(item, "generic")),
+          limit,
+        );
         return createToolSuccess(
           response_format,
           payload,
@@ -176,7 +186,10 @@ export function registerKemosoftTools(server: McpServer, client: KemosoftApiClie
     async ({ limit, response_format }) => {
       try {
         const raw = await client.get<JsonValue>("/v1/atendimento/etiquetas");
-        const payload = sliceItems(ensureArray(raw, "list tags"), limit);
+        const payload = sliceItems(
+          ensureArray(raw, "list tags").map((item) => sanitizeForOutput(item, "generic")),
+          limit,
+        );
         return createToolSuccess(
           response_format,
           payload,
@@ -204,13 +217,13 @@ export function registerKemosoftTools(server: McpServer, client: KemosoftApiClie
           `/v1/atendimento/validar-telefone/${encodeURIComponent(normalizedPhone)}`,
         );
         const payload = {
-          input: normalizedPhone,
-          result,
+          input: sanitizeForOutput(normalizedPhone, "customer"),
+          result: sanitizeForOutput(result, "generic"),
         };
         return createToolSuccess(
           response_format,
           payload,
-          renderLookupMarkdown("Validate Phone", "Phone", normalizedPhone, result),
+          renderLookupMarkdown("Validate Phone", "Phone", String(payload.input), payload.result),
         );
       } catch (error) {
         return createToolError(formatApiError(error));
@@ -235,12 +248,12 @@ export function registerKemosoftTools(server: McpServer, client: KemosoftApiClie
         );
         const payload = {
           input: normalizedCep,
-          result,
+          result: sanitizeForOutput(result, "generic"),
         };
         return createToolSuccess(
           response_format,
           payload,
-          renderLookupMarkdown("Address Lookup by CEP", "CEP", normalizedCep, result),
+          renderLookupMarkdown("Address Lookup by CEP", "CEP", normalizedCep, payload.result),
         );
       } catch (error) {
         return createToolError(formatApiError(error));
@@ -263,7 +276,10 @@ export function registerKemosoftTools(server: McpServer, client: KemosoftApiClie
         const raw = await client.get<JsonValue>(
           `/v1/atendimento/funil/${encodeURIComponent(normalizedPhone)}`,
         );
-        const payload = sliceItems(ensureArray(raw, "find services by phone"), limit);
+        const payload = sliceItems(
+          ensureArray(raw, "find services by phone").map((item) => sanitizeForOutput(item, "customer")),
+          limit,
+        );
         return createToolSuccess(
           response_format,
           payload,
@@ -293,12 +309,12 @@ export function registerKemosoftTools(server: McpServer, client: KemosoftApiClie
         const payload = {
           funnel,
           include_images,
-          result,
+          result: sanitizeForOutput(result, "generic"),
         };
         return createToolSuccess(
           response_format,
           payload,
-          renderFlowMarkdown("Pipeline Flow", funnel, include_images, result),
+          renderFlowMarkdown("Pipeline Flow", funnel, include_images, payload.result),
         );
       } catch (error) {
         return createToolError(formatApiError(error));
@@ -325,11 +341,15 @@ export function registerKemosoftTools(server: McpServer, client: KemosoftApiClie
           "get service status by id",
         );
 
-        const payload: JsonObject = { status };
+        const payload: JsonObject = { status: sanitizeForOutput(status, "customer") };
         return createToolSuccess(
           response_format,
           payload,
-          renderStatusMarkdown("Service Status by ID", status, include_customer_data),
+          renderStatusMarkdown(
+            "Service Status by ID",
+            payload.status as ServiceStatus,
+            include_customer_data,
+          ),
         );
       } catch (error) {
         return createToolError(formatApiError(error));
@@ -357,11 +377,15 @@ export function registerKemosoftTools(server: McpServer, client: KemosoftApiClie
           "get service status by funnel and cpf",
         );
 
-        const payload: JsonObject = { status };
+        const payload: JsonObject = { status: sanitizeForOutput(status, "customer") };
         return createToolSuccess(
           response_format,
           payload,
-          renderStatusMarkdown("Service Status by Funnel and CPF", status, include_customer_data),
+          renderStatusMarkdown(
+            "Service Status by Funnel and CPF",
+            payload.status as ServiceStatus,
+            include_customer_data,
+          ),
         );
       } catch (error) {
         return createToolError(formatApiError(error));
