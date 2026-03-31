@@ -1,7 +1,7 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { ToolAnnotations } from "@modelcontextprotocol/sdk/types.js";
 
-import { KemosoftApiClient, formatApiError, isJsonObject } from "./api-client.js";
+import { HeymaxCrmApiClient, formatApiError, isJsonObject } from "./api-client.js";
 import {
   createToolError,
   createToolSuccess,
@@ -92,12 +92,12 @@ function sliceItems(items: JsonValue[], limit: number): {
   };
 }
 
-export function registerKemosoftTools(server: McpServer, client: KemosoftApiClient): void {
+export function registerHeymaxCrmTools(server: McpServer, client: HeymaxCrmApiClient): void {
   server.registerTool(
-    "kemosoft_list_active_pipelines",
+    "heymax_crm_list_active_pipelines",
     {
       title: "List Active Pipelines",
-      description: "List active customer service funnels/pipelines configured in the Kemosoft API.",
+      description: "List active customer service funnels/pipelines configured in the HeyMax CRM API.",
       inputSchema: listInputSchema,
       outputSchema: listOutputSchema,
       annotations: READ_ONLY_ANNOTATIONS,
@@ -121,10 +121,10 @@ export function registerKemosoftTools(server: McpServer, client: KemosoftApiClie
   );
 
   server.registerTool(
-    "kemosoft_list_lost_reasons",
+    "heymax_crm_list_lost_reasons",
     {
       title: "List Lost Reasons",
-      description: "List available lost/closing reasons for customer service records in Kemosoft.",
+      description: "List available lost or closing reasons for customer service records in the HeyMax CRM API.",
       inputSchema: listInputSchema,
       outputSchema: listOutputSchema,
       annotations: READ_ONLY_ANNOTATIONS,
@@ -148,10 +148,10 @@ export function registerKemosoftTools(server: McpServer, client: KemosoftApiClie
   );
 
   server.registerTool(
-    "kemosoft_list_events",
+    "heymax_crm_list_events",
     {
       title: "List Events",
-      description: "List customer service events available in the Kemosoft API.",
+      description: "List customer service events available in the HeyMax CRM API.",
       inputSchema: listInputSchema,
       outputSchema: listOutputSchema,
       annotations: READ_ONLY_ANNOTATIONS,
@@ -175,10 +175,10 @@ export function registerKemosoftTools(server: McpServer, client: KemosoftApiClie
   );
 
   server.registerTool(
-    "kemosoft_list_tags",
+    "heymax_crm_list_tags",
     {
       title: "List Tags",
-      description: "List customer service tags configured in the Kemosoft API.",
+      description: "List customer service tags configured in the HeyMax CRM API.",
       inputSchema: listInputSchema,
       outputSchema: listOutputSchema,
       annotations: READ_ONLY_ANNOTATIONS,
@@ -202,10 +202,10 @@ export function registerKemosoftTools(server: McpServer, client: KemosoftApiClie
   );
 
   server.registerTool(
-    "kemosoft_validate_phone",
+    "heymax_crm_validate_phone",
     {
       title: "Validate Phone",
-      description: "Validate whether a phone number exists on WhatsApp according to the Kemosoft API.",
+      description: "Validate whether a phone number exists on WhatsApp according to the HeyMax CRM API.",
       inputSchema: phoneInputSchema,
       outputSchema: lookupOutputSchema,
       annotations: READ_ONLY_ANNOTATIONS,
@@ -232,10 +232,10 @@ export function registerKemosoftTools(server: McpServer, client: KemosoftApiClie
   );
 
   server.registerTool(
-    "kemosoft_search_address_by_cep",
+    "heymax_crm_search_address_by_cep",
     {
       title: "Search Address by CEP",
-      description: "Resolve a CEP into address data using the Kemosoft API.",
+      description: "Resolve a CEP into address data using the HeyMax CRM API.",
       inputSchema: cepInputSchema,
       outputSchema: lookupOutputSchema,
       annotations: READ_ONLY_ANNOTATIONS,
@@ -262,10 +262,10 @@ export function registerKemosoftTools(server: McpServer, client: KemosoftApiClie
   );
 
   server.registerTool(
-    "kemosoft_find_services_by_phone",
+    "heymax_crm_find_services_by_phone",
     {
       title: "Find Services by Phone",
-      description: "Find existing customer service records by phone number, grouped by CPF in the Kemosoft API.",
+      description: "Find existing customer service records by phone number, grouped by CPF in the HeyMax CRM API.",
       inputSchema: phoneListInputSchema,
       outputSchema: listOutputSchema,
       annotations: READ_ONLY_ANNOTATIONS,
@@ -292,10 +292,10 @@ export function registerKemosoftTools(server: McpServer, client: KemosoftApiClie
   );
 
   server.registerTool(
-    "kemosoft_get_pipeline_flow",
+    "heymax_crm_get_pipeline_flow",
     {
       title: "Get Pipeline Flow",
-      description: "Fetch workspace and flow data for a given Kemosoft funnel/pipeline slug.",
+      description: "Fetch workspace and flow data for a given HeyMax CRM funnel or pipeline slug.",
       inputSchema: funnelFlowInputSchema,
       outputSchema: pipelineFlowOutputSchema,
       annotations: READ_ONLY_ANNOTATIONS,
@@ -323,7 +323,7 @@ export function registerKemosoftTools(server: McpServer, client: KemosoftApiClie
   );
 
   server.registerTool(
-    "kemosoft_get_service_status_by_id",
+    "heymax_crm_get_service_status_by_id",
     {
       title: "Get Service Status by ID",
       description: "Fetch the current status of a customer service record by atendimento ID.",
@@ -358,7 +358,7 @@ export function registerKemosoftTools(server: McpServer, client: KemosoftApiClie
   );
 
   server.registerTool(
-    "kemosoft_get_service_status_by_funnel_and_cpf",
+    "heymax_crm_get_service_status_by_funnel_and_cpf",
     {
       title: "Get Service Status by Funnel and CPF",
       description: "Fetch the current status of a customer service record by funnel slug and CPF.",

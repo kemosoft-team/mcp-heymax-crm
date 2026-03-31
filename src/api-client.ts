@@ -1,14 +1,14 @@
 import { validateApiBaseUrl } from "./security.js";
 import type { ApiClientConfig, ApiRequestOptions, JsonObject, JsonValue } from "./types.js";
 
-export class KemosoftApiError extends Error {
+export class HeymaxCrmApiError extends Error {
   constructor(
     message: string,
     public readonly status: number,
     public readonly body: JsonValue,
   ) {
     super(message);
-    this.name = "KemosoftApiError";
+    this.name = "HeymaxCrmApiError";
   }
 }
 
@@ -53,7 +53,7 @@ function extractErrorMessage(body: JsonValue): string | undefined {
 }
 
 export function formatApiError(error: unknown): string {
-  if (error instanceof KemosoftApiError) {
+  if (error instanceof HeymaxCrmApiError) {
     switch (error.status) {
       case 401:
         return "Authentication failed with the HeyMax CRM API. Check HEYMAX_CRM_API_KEY.";
@@ -87,7 +87,7 @@ function truncateErrorMessage(message: string): string {
     : "Unexpected error while calling the HeyMax CRM API.";
 }
 
-export class KemosoftApiClient {
+export class HeymaxCrmApiClient {
   private readonly baseUrl: URL;
 
   constructor(private readonly config: ApiClientConfig) {
@@ -143,7 +143,7 @@ export class KemosoftApiClient {
 
     if (!response.ok) {
       const message = extractErrorMessage(parsedBody) ?? "Request failed";
-      throw new KemosoftApiError(message, response.status, parsedBody);
+      throw new HeymaxCrmApiError(message, response.status, parsedBody);
     }
 
     return parsedBody as T;

@@ -33,16 +33,16 @@ try {
   }
 
   const expectedTools = [
-    "kemosoft_find_services_by_phone",
-    "kemosoft_get_pipeline_flow",
-    "kemosoft_get_service_status_by_funnel_and_cpf",
-    "kemosoft_get_service_status_by_id",
-    "kemosoft_list_active_pipelines",
-    "kemosoft_list_events",
-    "kemosoft_list_lost_reasons",
-    "kemosoft_list_tags",
-    "kemosoft_search_address_by_cep",
-    "kemosoft_validate_phone",
+    "heymax_crm_find_services_by_phone",
+    "heymax_crm_get_pipeline_flow",
+    "heymax_crm_get_service_status_by_funnel_and_cpf",
+    "heymax_crm_get_service_status_by_id",
+    "heymax_crm_list_active_pipelines",
+    "heymax_crm_list_events",
+    "heymax_crm_list_lost_reasons",
+    "heymax_crm_list_tags",
+    "heymax_crm_search_address_by_cep",
+    "heymax_crm_validate_phone",
   ];
 
   for (const expectedTool of expectedTools) {
