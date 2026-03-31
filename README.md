@@ -1,4 +1,4 @@
-# mcp-heymax-crm
+# @kemosoft/mcp-heymax-crm
 
 [![CI](https://github.com/kemosoft-team/mcp-heymax-crm/actions/workflows/ci.yml/badge.svg)](https://github.com/kemosoft-team/mcp-heymax-crm/actions/workflows/ci.yml)
 
@@ -73,10 +73,10 @@ npm install
 npm run build
 ```
 
-Via `npx` depois da publicação no npm. O nome `mcp-heymax-crm` está livre no registry no momento desta revisão:
+Via `npx` depois da publicação no npm:
 
 ```bash
-npx mcp-heymax-crm
+npx -y @kemosoft/mcp-heymax-crm
 ```
 
 ## Execução
@@ -93,23 +93,35 @@ Desenvolvimento:
 npm run dev
 ```
 
-## Publicação no npm
+## Pipeline de publicação
 
-O pacote já está preparado para distribuição CLI:
+O release agora é automatizado pelo GitHub Actions quando commits convencionais chegam em `main`.
 
-- `bin` configurado para `mcp-heymax-crm`
-- `prepack` executa `build` e `smoke`
-- `LICENSE` incluída
-- CI básica configurada no GitHub Actions
-- `publishConfig.access=public` definido
+- `fix:` gera patch
+- `feat:` gera minor
+- `feat!:` ou `BREAKING CHANGE` gera major
+- commits que não alteram versão não disparam release
 
-Antes de publicar:
+O fluxo faz:
+
+- `semantic-release` calcula a próxima versão
+- gera `CHANGELOG.md`
+- publica no npm como `@kemosoft/mcp-heymax-crm`
+- cria release no GitHub
+- commita os arquivos de release com `[skip ci]` para evitar loop
+
+Secrets necessários no repositório:
+
+- `NPM_TOKEN`: token granular com permissão de publish no scope `@kemosoft`
+- `GITHUB_TOKEN`: o GitHub Actions fornece automaticamente
+
+Para validar localmente antes de subir:
 
 ```bash
-npm login
 npm run prepack
-npm publish --access public
 ```
+
+Se você quiser publicar manualmente fora do pipeline, use o fluxo do semantic-release em vez de `npm publish` direto.
 
 ## Tools disponíveis
 
@@ -145,7 +157,7 @@ Exemplo genérico de comando:
   "mcpServers": {
     "heymax-crm": {
       "command": "npx",
-      "args": ["-y", "mcp-heymax-crm"],
+      "args": ["-y", "@kemosoft/mcp-heymax-crm"],
       "env": {
         "HEYMAX_CRM_API_KEY": "sua-chave"
       }
@@ -161,7 +173,7 @@ Exemplo genérico de comando:
   "mcpServers": {
     "heymax-crm": {
       "command": "npx",
-      "args": ["-y", "mcp-heymax-crm"],
+      "args": ["-y", "@kemosoft/mcp-heymax-crm"],
       "env": {
         "HEYMAX_CRM_API_KEY": "sua-chave"
       }
