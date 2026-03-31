@@ -1,5 +1,5 @@
 export const SERVER_INFO = {
-  name: "kemosoft-mcp-server",
+  name: "heymax-crm-mcp-server",
   version: "0.1.0",
 } as const;
 

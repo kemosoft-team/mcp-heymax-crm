@@ -1,5 +1,7 @@
 # mcp-heymax-crm
 
+[![CI](https://github.com/kemosoft-team/mcp-heymax-crm/actions/workflows/ci.yml/badge.svg)](https://github.com/kemosoft-team/mcp-heymax-crm/actions/workflows/ci.yml)
+
 MCP server em TypeScript para a API de atendimento do HeyMax CRM hospedada em `ms-crm-az.kemosoft.com.br`.
 
 ## Estado atual
@@ -27,6 +29,18 @@ sequenceDiagram
     Servidor-->>Cliente: structuredContent + texto
 ```
 
+## Para quem isso é utilizável
+
+Hoje o servidor é utilizável por qualquer pessoa que tenha:
+
+- Node.js `>= 22`
+- acesso a um cliente MCP compatível com `stdio`
+- uma credencial válida em `KEMOSOFT_API_KEY`
+
+Revisão adversarial:
+- Sem credencial válida, o pacote instala mas não entrega valor real.
+- Portanto o produto ainda não é "aberto para qualquer pessoa" no sentido de acesso irrestrito à API.
+
 ## Requisitos
 
 - Node.js `>= 22`
@@ -44,9 +58,17 @@ Copie `.env.example` para `.env` ou exporte as variáveis no shell:
 
 ## Instalação
 
+Via npm local:
+
 ```bash
 npm install
 npm run build
+```
+
+Via `npx` depois da publicação no npm. O nome `mcp-heymax-crm` está livre no registry no momento desta revisão:
+
+```bash
+npx mcp-heymax-crm
 ```
 
 ## Execução
@@ -61,6 +83,24 @@ Desenvolvimento:
 
 ```bash
 npm run dev
+```
+
+## Publicação no npm
+
+O pacote já está preparado para distribuição CLI:
+
+- `bin` configurado para `mcp-heymax-crm`
+- `prepack` executa `build` e `smoke`
+- `LICENSE` incluída
+- CI básica configurada no GitHub Actions
+- `publishConfig.access=public` definido
+
+Antes de publicar:
+
+```bash
+npm login
+npm run prepack
+npm publish --access public
 ```
 
 ## Tools disponíveis
@@ -91,6 +131,55 @@ Exemplo genérico de comando:
 }
 ```
 
+### Claude Desktop
+
+```json
+{
+  "mcpServers": {
+    "heymax-crm": {
+      "command": "npx",
+      "args": ["-y", "mcp-heymax-crm"],
+      "env": {
+        "KEMOSOFT_API_KEY": "sua-chave",
+        "KEMOSOFT_TIMEOUT_MS": "20000"
+      }
+    }
+  }
+}
+```
+
+### Codex
+
+```json
+{
+  "mcpServers": {
+    "heymax-crm": {
+      "command": "npx",
+      "args": ["-y", "mcp-heymax-crm"],
+      "env": {
+        "KEMOSOFT_API_KEY": "sua-chave"
+      }
+    }
+  }
+}
+```
+
+### Cursor
+
+```json
+{
+  "mcpServers": {
+    "heymax-crm": {
+      "command": "node",
+      "args": ["/caminho/para/mcp-heymax-crm/dist/index.js"],
+      "env": {
+        "KEMOSOFT_API_KEY": "sua-chave"
+      }
+    }
+  }
+}
+```
+
 ## Estrutura do projeto
 
 ```text
@@ -110,6 +199,7 @@ src/
 ```bash
 npm run build
 npm run typecheck
+npm run smoke
 ```
 
 ## Limitações atuais
@@ -118,3 +208,4 @@ npm run typecheck
 - Sem transporte HTTP
 - Sem paginação real no backend; o limite atual corta o array retornado pela API
 - Alguns endpoints da API não possuem schema de resposta confiável na documentação
+- A utilidade prática ainda depende de distribuição controlada de `KEMOSOFT_API_KEY`
