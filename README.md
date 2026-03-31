@@ -90,7 +90,7 @@ npm run dev
 
 ## Pipeline de publicação
 
-O release agora é automatizado pelo GitHub Actions quando commits convencionais chegam em `main`.
+O release agora é automatizado pelo GitHub Actions depois que o CI passa em `main`.
 
 - `fix:` gera patch
 - `feat:` gera minor
@@ -99,6 +99,7 @@ O release agora é automatizado pelo GitHub Actions quando commits convencionais
 
 O fluxo faz:
 
+- o CI valida build, testes e smoke
 - `semantic-release` calcula a próxima versão
 - gera `CHANGELOG.md`
 - publica no npm como `@kemosoft/mcp-heymax-crm`
