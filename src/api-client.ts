@@ -57,7 +57,7 @@ export function formatApiError(error: unknown): string {
 
     switch (error.status) {
       case 401:
-        return `Authentication failed with the Kemosoft API: ${baseMessage}. Check KEMOSOFT_API_KEY.`;
+        return `Authentication failed with the Kemosoft API: ${baseMessage}. Check HEYMAX_CRM_API_KEY.`;
       case 404:
         return `Kemosoft resource not found: ${baseMessage}. Confirm the provided identifiers.`;
       case 422:
@@ -70,7 +70,7 @@ export function formatApiError(error: unknown): string {
   }
 
   if (error instanceof DOMException && error.name === "TimeoutError") {
-    return "Kemosoft API request timed out. Retry with a narrower query or raise KEMOSOFT_TIMEOUT_MS.";
+    return "Kemosoft API request timed out after 30 seconds. Retry with a narrower query.";
   }
 
   if (error instanceof Error) {

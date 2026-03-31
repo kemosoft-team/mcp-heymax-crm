@@ -4,6 +4,6 @@ export const SERVER_INFO = {
 } as const;
 
 export const DEFAULT_BASE_URL = "https://ms-crm-az.kemosoft.com.br";
-export const DEFAULT_TIMEOUT_MS = 20_000;
+export const FIXED_TIMEOUT_MS = 30_000;
 export const DEFAULT_LIST_LIMIT = 20;
 export const MAX_LIST_LIMIT = 100;

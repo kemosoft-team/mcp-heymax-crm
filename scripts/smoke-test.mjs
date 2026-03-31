@@ -7,7 +7,7 @@ const transport = new StdioClientTransport({
   cwd: process.cwd(),
   env: {
     ...process.env,
-    KEMOSOFT_API_KEY: process.env.KEMOSOFT_API_KEY || "smoke-test-key",
+    HEYMAX_CRM_API_KEY: process.env.HEYMAX_CRM_API_KEY || "smoke-test-key",
   },
   stderr: "pipe",
 });

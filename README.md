@@ -35,7 +35,7 @@ Hoje o servidor é utilizável por qualquer pessoa que tenha:
 
 - Node.js `>= 22`
 - acesso a um cliente MCP compatível com `stdio`
-- uma credencial válida em `KEMOSOFT_API_KEY`
+- uma credencial válida em `HEYMAX_CRM_API_KEY`
 
 Revisão adversarial:
 - Sem credencial válida, o pacote instala mas não entrega valor real.
@@ -45,16 +45,17 @@ Revisão adversarial:
 
 - Node.js `>= 22`
 - `npm`
-- Credencial válida em `KEMOSOFT_API_KEY`
+- Credencial válida em `HEYMAX_CRM_API_KEY`
 
 ## Variáveis de ambiente
 
 Copie `.env.example` para `.env` ou exporte as variáveis no shell:
 
-- `KEMOSOFT_API_KEY`: obrigatório
-- `KEMOSOFT_API_BASE_URL`: opcional, default `https://ms-crm-az.kemosoft.com.br`
-- `KEMOSOFT_TIMEOUT_MS`: opcional, default `20000`
-- `KEMOSOFT_API_SOURCE`: opcional nesta versão; será usado nas futuras operações de escrita
+- `HEYMAX_CRM_API_KEY`: obrigatório
+- `HEYMAX_CRM_API_BASE_URL`: opcional, default `https://ms-crm-az.kemosoft.com.br`
+- `HEYMAX_CRM_API_SOURCE`: opcional nesta versão; será usado nas futuras operações de escrita
+
+O timeout de request nao e configuravel pelo usuario. Ele e fixo em `30s`.
 
 ## Instalação
 
@@ -125,8 +126,7 @@ Exemplo genérico de comando:
   "command": "node",
   "args": ["C:/caminho/para/mcp-heymax-crm/dist/index.js"],
   "env": {
-    "KEMOSOFT_API_KEY": "sua-chave",
-    "KEMOSOFT_TIMEOUT_MS": "20000"
+    "HEYMAX_CRM_API_KEY": "sua-chave"
   }
 }
 ```
@@ -140,8 +140,7 @@ Exemplo genérico de comando:
       "command": "npx",
       "args": ["-y", "mcp-heymax-crm"],
       "env": {
-        "KEMOSOFT_API_KEY": "sua-chave",
-        "KEMOSOFT_TIMEOUT_MS": "20000"
+        "HEYMAX_CRM_API_KEY": "sua-chave"
       }
     }
   }
@@ -157,7 +156,7 @@ Exemplo genérico de comando:
       "command": "npx",
       "args": ["-y", "mcp-heymax-crm"],
       "env": {
-        "KEMOSOFT_API_KEY": "sua-chave"
+        "HEYMAX_CRM_API_KEY": "sua-chave"
       }
     }
   }
@@ -173,7 +172,7 @@ Exemplo genérico de comando:
       "command": "node",
       "args": ["/caminho/para/mcp-heymax-crm/dist/index.js"],
       "env": {
-        "KEMOSOFT_API_KEY": "sua-chave"
+        "HEYMAX_CRM_API_KEY": "sua-chave"
       }
     }
   }
@@ -208,4 +207,4 @@ npm run smoke
 - Sem transporte HTTP
 - Sem paginação real no backend; o limite atual corta o array retornado pela API
 - Alguns endpoints da API não possuem schema de resposta confiável na documentação
-- A utilidade prática ainda depende de distribuição controlada de `KEMOSOFT_API_KEY`
+- A utilidade prática ainda depende de distribuição controlada de `HEYMAX_CRM_API_KEY`
