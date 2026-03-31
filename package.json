@@ -1,6 +1,6 @@
 {
   "name": "@kemosoft/mcp-heymax-crm",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "MCP server for the HeyMax CRM customer service API",
   "license": "MIT",
   "private": false,
